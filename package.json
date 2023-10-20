@@ -19,6 +19,6 @@
     "scripts"
   ],
   "eslintIgnore": [
-    "Добавить строки.js"
+    "build"
   ]
 }

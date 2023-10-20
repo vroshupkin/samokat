@@ -39,9 +39,7 @@
 	"no-unreachable": "error",
     "no-undef": "off",
 	"max-len": ["error", { "code": 120 }],
-	"no-constant-condition": "off",
-	"ignorePatterns": ["./build"]
-    
+	"no-constant-condition": "off"
   }
 }
 

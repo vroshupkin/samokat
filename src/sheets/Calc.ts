@@ -2,44 +2,48 @@
 
 namespace Calc
 {
-    export function onEditCosts()
+    const { A, B, C } = Constants.XCell;
+    
+    export function onEditCosts(e: GoogleAppsScript.Events.SheetsOnEdit)
     {
+      
       const sheet = SpreadsheetApp.getActiveSheet();
-      if(!sheet)
+      e.range.getRow();
+      const [ x, y ] = [ e.range.getColumn(), e.range.getRow() ];
+
+      if(x < B || x > C || y < 3 || y > 14 || !sheet)
       {
         return;
       }
 
-      const { B } = Constants.XCell;
       
       const values = sheet.getRange(3, B, 10, 2).getValues();
       
-      const transpose_matrix = Tools.TransposeMatrix(values)
+      const transpose_matrix = Tools.TransposeMatrix(values);
       const types = transpose_matrix[0] as (keyof typeof dropdown_val)[];
       const vals = transpose_matrix[1] as number[];
 
       const dropdown_val = 
       {
-        'День': 1 / 7,
-        'Месяц': 30 / 7,
-        'Неделя': 7 / 7
-      }
+        'День': 7,
+        'Месяц': 7 / 30,
+        'Неделя': 7 / 7,
+        '': 0
+      };
 
       let sum = 0;
       for(let i = 0; i < types.length; i++)
       {
         const t = types[i];
-        if(t === undefined)
+        if(dropdown_val[t] === undefined)
         {
-            throw new Tools.UiError(`Типа '${t}' нет в коде`);
+          throw new Tools.UiError(`Типа '${t}' нет в коде`);
         }
-        
+
         sum += dropdown_val[t] * vals[i];
       }
-      
-      new Tools.UiError(sum)
+    
+      sheet.getRange(14, B).setValue(sum);
 
-
-    //   new Tools.UiError(transpose_matrix + '');
     }
 }

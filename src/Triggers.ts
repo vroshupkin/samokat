@@ -6,7 +6,7 @@ const atEdit = (e: GoogleAppsScript.Events.SheetsOnEdit) =>
   switch (sheet_name as typeof Constants.SHEETS.CALC) 
   {
     case 'Расчет':
-      Calc.onEditCosts();
+      Calc.onEditCosts(e);
       break;
   
     default:
